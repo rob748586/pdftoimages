@@ -11,18 +11,22 @@ def list_pdf_files(input_folder: str = "input") -> list[str]:
 
     return [str(path) for path in folder.iterdir() if path.is_file() and path.suffix.lower() == ".pdf"]
 
-input_folder = Path("input")
-if not input_folder.exists():
-    input_folder.mkdir()
+def main():
+    input_folder = Path("input")
+    if not input_folder.exists():
+        input_folder.mkdir()
 
-output_folder = Path("output")
-if not output_folder.exists():
-    output_folder.mkdir()
+    output_folder = Path("output")
+    if not output_folder.exists():
+        output_folder.mkdir()
 
-files = list_pdf_files("input")
+    files = list_pdf_files("input")
 
-for file in files:
-    images = convert_from_path(file, poppler_path=poppler_path)
-    for i, image in enumerate(images):
-        output_path = output_folder / f'{Path(file).stem}_page_{i + 1}.jpg'
-        image.save(output_path, 'JPEG')
+    for file in files:
+        images = convert_from_path(file, poppler_path=poppler_path)
+        for i, image in enumerate(images):
+            output_path = output_folder / f'{Path(file).stem}_page_{i + 1}.jpg'
+            image.save(output_path, 'JPEG')
+
+if __name__ == "__main__":
+    main()
